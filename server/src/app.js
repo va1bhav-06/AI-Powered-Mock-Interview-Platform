@@ -26,7 +26,10 @@ const app = express();
 
 // 1. CORS: Allow our frontend (React) to talk to this backend
 //    Without this, browsers will block requests from localhost:5173 → localhost:5000
-app.use(cors({ origin: process.env.CLIENT_URL || 'http://localhost:5173' }));
+app.use(cors({
+  origin: '*', // Allow requests from Vite frontend
+  credentials: true,               // Allow cookies/headers if needed
+}));
 
 // 2. Body Parser: Convert incoming JSON requests to JavaScript objects
 //    10mb limit to handle large resume text and interview data
@@ -42,6 +45,7 @@ app.use(express.json({ limit: '10mb' }));
 // /api/resume    → resume upload and parsing routes
 // /api/history   → interview history routes
 app.use('/api', routes);
+
 
 // ============================================
 // ERROR HANDLING (must be AFTER routes)
